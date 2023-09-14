@@ -42,7 +42,7 @@ app.get('/movies/:id', (req, res) => {
 });
 
 // Rota para inserir um novo filme
-app.post('/new', async (req, res) => {
+app.post('/new', (req, res) => {
     try {
       const { titulo, sinopse, duracao, imagem, dataLancamento } = req.body;
       if (!titulo || !sinopse || !duracao || !imagem || !dataLancamento) {
@@ -55,7 +55,7 @@ app.post('/new', async (req, res) => {
       const query = 'INSERT INTO `movies` (titulo, sinopse, duracao, imagem, dataLancamento) VALUES (?, ?, ?, ?, ?)';
       const values = [titulo, sinopse, duracao, imagemBinario, dataLancamento];
   
-      const [result] = await connection.query(query, values);
+      connection.execute(query, values);
   
       res.status(201).json({ message: 'Filme inserido com sucesso' });
     } catch (error) {
